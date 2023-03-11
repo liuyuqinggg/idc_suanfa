@@ -72,7 +72,7 @@ void dpFunc(vector<string> &broad, vector<vector<int>> &prices, vector<vector<in
 
 int main(){
     int n = 0, m = 0, k = 0;
-    cin >> n >> m >> k;
+    // cin >> n >> m >> k;
 //    vector<vector<char>> broad(n, vector<char>(m));
 //    for (int i = 0; i < n; ++i) {
 //        string s;
@@ -82,19 +82,29 @@ int main(){
 //        }
 //    }
     vector<string> broad;
-    for (int i = 0; i < n; ++i) {
-        string s;
-        cin >> s;
-        broad.push_back(s);
-    }
+    // for (int i = 0; i < n; ++i) {
+    //     string s;
+    //     cin >> s;
+    //     broad.push_back(s);
+    // }
     vector<vector<int>> prices(n, vector<int>(m, -1));
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
-            int tmp = 0;
-            cin >> tmp;
-            prices[i][j] = tmp;
-        }
-    }
+    // for (int i = 0; i < n; ++i) {
+    //     for (int j = 0; j < m; ++j) {
+    //         int tmp = 0;
+    //         cin >> tmp;
+    //         prices[i][j] = tmp;
+    //     }
+    // }
+
+    n = 5,m = 1, k = 6;
+
+     prices = {{0},{2},{3},{6},{2}};
+    
+     broad = {"R","R","R","B","B"};
+
+
+    
+
     vector<vector<int>> dp(n, vector<int>(m, 0));
     for (int i = 1; i < m; ++i) {
         if (broad[0][i] != broad[0][i-1]) {
