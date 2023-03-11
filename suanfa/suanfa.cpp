@@ -18,7 +18,7 @@ int main() {
      startTime = clock();
     vector<int> x;
     srand(time(0));
-    for(int i = 0; i < 10000000; i++){
+    for(int i = 0; i < 1000; i++){
         x.push_back(rand() % 10000);
     }
      int size = x.size();
