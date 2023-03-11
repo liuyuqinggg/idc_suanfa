@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
 
     dp[0][0] = value[0][0];
 
-    for(int i = 1; i < n; i++){ //初始化第一行
+    for(int i = 1; i < n; i++){ //初始化第一行  
         if(color[0][i] == color[0][i - 1] && dp[0][i - 1] != -1){
             dp[0][i] = dp[0][i-1] + value[0][i];
         }else if(dp[0][i - 1] >= k){
