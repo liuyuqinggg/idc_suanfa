@@ -10,6 +10,7 @@ void subVector(vector<int>& x, int start, int end, int sub) {
     for (int i = start; i <= end; i++) {
         x[i] -= sub;       
     }
+    cout << "test...";
 }
 
 int main() {
