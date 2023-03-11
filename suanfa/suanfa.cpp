@@ -7,10 +7,12 @@
 using namespace std;
 void subVector(vector<int>& x, int start, int end, int sub) {
     
+    cout << "test...";
     for (int i = start; i <= end; i++) {
         x[i] -= sub;       
     }
-    cout << "test...";
+    cout << "aaaa...";
+    
 }
 
 int main() {
