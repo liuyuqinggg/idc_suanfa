@@ -12,7 +12,13 @@ int main(int argc, char *argv[])
     if(argc < 3){
         printf("Using:./procctl timetvl program argv ...\n");
         printf("Example:.~/project/mytools/bin/procctl 5 /usr/bin/tar zcvf /tmp/tmp.tgz /usr/include\n\n");
-
+        printf("Example:.~/project/mytools/bin/procctl 60 /home/lyq/project/myidc/bin/crtsurfdata /home/lyq/project/myidc/ini/stcode.ini /home/lyq/project/tem/surfdata\
+                 /home/lyq/project/myidc/log/crtsurfdata.log xml,json,csv\n\n");
+        printf("本程序是服务程序的调度程序，周期性启动服务程序或shell脚本。\n");
+        printf("timetvl 运行周期，单位：秒。被调度的程序运行结束后，在timetvl秒后会被procctl重新启动。\n");
+        printf("program 被调度的程序名，必须使用全路径。\n");
+        printf("argvs   被调度的程序的参数。\n");
+        printf("注意，本程序不会被kill杀死，但可以用kill -9强行杀死。\n\n\n");
         return -1;
     }
 
