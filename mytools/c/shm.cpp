@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <sys/ipc.h>
 #include <sys/shm.h>
 #include<iostream>
 #include<stdlib.h>
@@ -15,7 +16,7 @@ int main(int argc, char const *argv[])
 {
     
     int shmid;
-    if((shmid = shmget(0x5005,sizeof(struct st_pid),0640 | IPC_CREAT)) == -1){
+    if((shmid = shmget(0x5005,sizeof(struct st_pid), 0640 | IPC_CREAT)) == -1){
         printf("shmget(0x5005) failed\n");
         return -1;
     }
