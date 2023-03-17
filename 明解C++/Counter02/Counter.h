@@ -1,48 +1,55 @@
-// ¼ÆÊıÆ÷ÀàCounter£¨µÚ2°æ£©
+// è®¡æ•°å™¨ç±»Counterï¼ˆç¬¬2ç‰ˆï¼‰
 
 #ifndef ___Class_Counter
 #define ___Class_Counter
 
 #include <climits>
 
-//===== ¼ÆÊıÆ÷Àà =====//
+//===== è®¡æ•°å™¨ç±» =====//
 class Counter {
-	unsigned cnt;		// ¼ÆÊıÆ÷
+	unsigned cnt;		// è®¡æ•°å™¨
 
 public:
-	//--- ¹¹Ôìº¯Êı ---//
+	//--- æ„é€ å‡½æ•° ---//
 	Counter() : cnt(0) { }
 
-	//--- unsignedĞÍµÄ×ª»»º¯Êı  ---//
+	//--- unsignedå‹çš„è½¬æ¢å‡½æ•°  ---//
 	operator unsigned() const { return cnt; }
 
-	//--- Âß¼­·ÇÔËËã·û ---//
+	//--- èµ‹å€¼è¿ç®—ç¬¦ ---//
+	// Counter& operator = (Counter &counter){
+	// 	std::cout << "èµ‹å€¼è¿ç®—ç¬¦è°ƒç”¨;";		
+	// 	(*this) = counter;
+	// 	return *this;
+	// }
+
+	//--- é€»è¾‘éè¿ç®—ç¬¦ ---//
 	bool operator!() const { return cnt == 0; }
 
-	//--- Ç°ÖÃµİÔöÔËËã·û ---//
+	//--- å‰ç½®é€’å¢è¿ç®—ç¬¦ ---//
 	Counter& operator++() {
-		if (cnt < UINT_MAX) cnt++;	// ¼ÆÊıÆ÷µÄÉÏÏŞÎªUINT_MAX
-		return *this;				// ·µ»Ø×ÔÉíµÄÒıÓÃ
+		if (cnt < UINT_MAX) cnt++;	// è®¡æ•°å™¨çš„ä¸Šé™ä¸ºUINT_MAX
+		return *this;				// è¿”å›è‡ªèº«çš„å¼•ç”¨
 	}
 
-	//--- ºóÖÃµİÔöÔËËã·û ---//
+	//--- åç½®é€’å¢è¿ç®—ç¬¦ ---//
 	Counter operator++(int) {
-		Counter x = *this;			// ±£´æµİÔöÇ°µÄÖµ
-		++(*this);					// ÓÉÇ°ÖÃµİÔöÔËËã·ûÖ´ĞĞµİÔö
-		return x;					// ·µ»Ø¸Õ²Å±£´æµÄÖµ
+		Counter x = *this;			// ä¿å­˜é€’å¢å‰çš„å€¼
+		++(*this);					// ç”±å‰ç½®é€’å¢è¿ç®—ç¬¦æ‰§è¡Œé€’å¢
+		return x;					// è¿”å›åˆšæ‰ä¿å­˜çš„å€¼
 	}
 
-	//--- Ç°ÖÃµİ¼õÔËËã·û ---//
+	//--- å‰ç½®é€’å‡è¿ç®—ç¬¦ ---//
 	Counter& operator--() {
-		if (cnt > 0) cnt--;			// ¼ÆÊıÆ÷µÄÏÂÏŞÎª0
-		return *this;				// ·µ»Ø×ÔÉíµÄÒıÓÃ
+		if (cnt > 0) cnt--;			// è®¡æ•°å™¨çš„ä¸‹é™ä¸º0
+		return *this;				// è¿”å›è‡ªèº«çš„å¼•ç”¨
 	}
 
-	//--- ºóÖÃµİ¼õÔËËã·û ---//
+	//--- åç½®é€’å‡è¿ç®—ç¬¦ ---//
 	Counter operator--(int) {
-		Counter x = *this;			// ±£´æµİ¼õÇ°µÄÖµ
-		--(*this);					// ÓÉÇ°ÖÃµİ¼õÔËËã·ûÖ´ĞĞµİ¼õ
-		return x;					// ·µ»Ø¸Õ²Å±£´æµÄÖµ
+		Counter x = *this;			// ä¿å­˜é€’å‡å‰çš„å€¼
+		--(*this);					// ç”±å‰ç½®é€’å‡è¿ç®—ç¬¦æ‰§è¡Œé€’å‡
+		return x;					// è¿”å›åˆšæ‰ä¿å­˜çš„å€¼
 	}
 };
 
