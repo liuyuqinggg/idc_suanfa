@@ -4,8 +4,7 @@
 
 using namespace std;
 
-int main()
-{
+int main(){
 	double x;		// 加减乘除运算的操作数
 	double y;		// 加减乘除运算的操作数
 
@@ -17,7 +16,7 @@ int main()
 	cout << "y的值：";		// 提示输入y的值
 	cin >> y;				// 向y读入实数值
 
-	cout << "x + y是 << x + y << "。\n";	// 显示x + y的值
+	cout << "x + y是" << x + y << "。\n";	// 显示x + y的值
 	cout << "x - y是" << x - y << "。\n";	// 显示x - y的值
 	cout << "x * y是" << x * y << "。\n";	// 显示x * y的值
 	cout << "x / y是" << x / y << "。\n";	// 显示x / y的值
