@@ -10,7 +10,7 @@ class IntArray {
 
 public:
 	//----- ÏÂ±ê·¶Î§´íÎó -----//
-	class IdxRngErr {
+	class IdxRngErr { 
 	private:
 		const IntArray* ident;
 		int idx;
