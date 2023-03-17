@@ -25,7 +25,7 @@
      cout << offset(A, s) <<endl;
      cout << sizeof(ex1) << endl;  // 56 struct
      return 0;
- }j
+ }
 
 // 作者：力扣 (LeetCode)
 // 链接：https://leetcode.cn/leetbook/read/cmian-shi-tu-po/vvzhvi/
