@@ -1,7 +1,7 @@
-// ¸´ÊıÀàComplexµÄÊ¹ÓÃÀı³Ì
+// å¤æ•°ç±»Complexçš„ä½¿ç”¨ä¾‹ç¨‹
 
 #include <iostream>
-#include "Complex.h"
+#include "Compl2ex.h"
 
 using namespace std;
 
@@ -9,19 +9,19 @@ int main()
 {
 	double re, im;
 
-	cout << "aµÄÊµ²¿£º";  cin >> re;
-	cout << "aµÄĞé²¿£º";  cin >> im;
+	cout << "açš„å®éƒ¨ï¼š";  cin >> re;
+	cout << "açš„è™šéƒ¨ï¼š";  cin >> im;
 	Complex a(re, im);
 
-	cout << "bµÄÊµ²¿£º";  cin >> re;
-	cout << "bµÄĞé²¿£º";  cin >> im;
+	cout << "bçš„å®éƒ¨ï¼š";  cin >> re;
+	cout << "bçš„è™šéƒ¨ï¼š";  cin >> im;
 	Complex b(re, im);
 
 	Complex c = -a + b;
 
-	b += 2.0;						// b¼ÓÉÏ(2.0,0.0)
-	c -= Complex(1.0, 1.0);			// c¼õÈ¥(1.0,1.0)
-	Complex d(b.imag(), c.real());	// ¸³Óèd£¨bµÄÊµ²¿, cµÄĞé²¿£©
+	b += 2.0;						// båŠ ä¸Š(2.0,0.0)
+	c -= Complex(1.0, 1.0);			// cå‡å»(1.0,1.0)
+	Complex d(b.imag(), c.real());	// èµ‹äºˆdï¼ˆbçš„å®éƒ¨, cçš„è™šéƒ¨ï¼‰
 
 	cout << "a = " << a << '\n';
 	cout << "b = " << b << '\n';

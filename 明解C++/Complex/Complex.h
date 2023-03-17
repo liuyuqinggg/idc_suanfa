@@ -1,65 +1,67 @@
-// ¸´ÊıÀàComplex
+// å¤æ•°ç±»Complex
 
 #ifndef ___Class_Complex
 #define ___Class_Complex
 
 #include <iostream>
 
-//===== ¸´ÊıÀà =====//
+//===== å¤æ•°ç±» =====//
 class Complex {
-	double re;		// Êµ²¿
-	double im;		// Ğé²¿
+	double re;		// å®éƒ¨
+	double im;		// è™šéƒ¨
 
 public:
-	Complex(double r = 0, double i = 0) : re(r), im(i) { }	 // ¹¹Ôìº¯Êı
+	Complex(double r = 0, double i = 0) : re(r), im(i) {
+		std::cout << "æ„é€ å‡½æ•°è¢«è°ƒç”¨ re = " << re << ", im = " << im << std::endl;
+	 }	 // æ„é€ å‡½æ•°
 
-	double real() const { return re; }		// ·µ»ØÊµ²¿
-	double imag() const { return im; }		// ·µ»ØĞé²¿
+	double real() const { return re; }		// è¿”å›å®éƒ¨
+	double imag() const { return im; }		// è¿”å›è™šéƒ¨
 
-	Complex operator+() const { return *this; }				 // Ò»Ôª+ÔËËã·û
-	Complex operator-() const { return Complex(-re, -im); }	 // Ò»Ôª-ÔËËã·û
+	Complex operator+() const { return *this; }				 // ä¸€å…ƒ+è¿ç®—ç¬¦
+	Complex operator-() const { return Complex(-re, -im); }	 // ä¸€å…ƒ-è¿ç®—ç¬¦
 
-	//--- ¸´ºÏ¸³ÖµÔËËã·û ---//
+	//--- å¤åˆèµ‹å€¼è¿ç®—ç¬¦ ---//
 	Complex& operator+=(const Complex& x) {
 		re += x.re;
 		im += x.im;
 		return *this;
 	}
 
-	//--- ¸´ºÏ¸³ÖµÔËËã·û ---//
+	//--- å¤åˆèµ‹å€¼è¿ç®—ç¬¦ ---//
 	Complex& operator-=(const Complex& x) {
 		re -= x.re;
 		im -= x.im;
 		return *this;
 	}
 
-	//--- ÏàµÈÔËËã·û ---//
+	//--- ç›¸ç­‰è¿ç®—ç¬¦ ---//
 	friend bool operator==(const Complex& x, const Complex& y) {
 		return x.re == y.re && x.im == y.im;
 	}
 
-	//--- ÏàµÈÔËËã·û ---//
+	//--- ç›¸ç­‰è¿ç®—ç¬¦ ---//
 	friend bool operator!=(const Complex& x, const Complex& y) {
 		return !(x == y);
 	}
 
-	//--- ¶şÔª+ÔËËã·û£¨Complex + Complex£©---//
+	//--- äºŒå…ƒ+è¿ç®—ç¬¦ï¼ˆComplex + Complexï¼‰---//
 	friend Complex operator+(const Complex& x, const Complex& y) {
 		return Complex(x.re + y.re, x.im + y.im);
 	}
 
-	//--- ¶şÔª+ÔËËã·û£¨double + Complex£©---//
+	//--- äºŒå…ƒ+è¿ç®—ç¬¦ï¼ˆdouble + Complexï¼‰---//
 	friend Complex operator+(double x, const Complex& y) {
 		return Complex(x + y.re, y.im);
 	}
 
-	//--- ¶şÔª+ÔËËã·û£¨Complex + double£©---//
+	//--- äºŒå…ƒ+è¿ç®—ç¬¦ï¼ˆComplex + doubleï¼‰---//
 	friend Complex operator+(const Complex& x, double y) {
 		return Complex(x.re + y, x.im);
 	}
 };
 
-//--- ÏòÊä³öÁ÷s²åÈëx ---//
+//--- å‘è¾“å‡ºæµsæ’å…¥x ---//
 inline std::ostream& operator<<(std::ostream& s, const Complex& x)
 {
 	return s << '(' << x.real() << ", " << x.imag() << ')';

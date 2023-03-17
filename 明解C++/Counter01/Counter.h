@@ -1,30 +1,30 @@
-// ¼ÆÊıÆ÷ÀàCounter£¨µÚ1°æ£©
+// è®¡æ•°å™¨ç±»Counterï¼ˆç¬¬1ç‰ˆï¼‰
 
 #ifndef ___Class_Counter
 #define ___Class_Counter
 
 #include <climits>
 
-//===== ¼ÆÊıÆ÷Àà =====//
+//===== è®¡æ•°å™¨ç±» =====//
 class Counter {
-	unsigned cnt;		// ¼ÆÊıÆ÷
+	unsigned cnt;		// è®¡æ•°å™¨
 
 public:
-	//--- ¹¹Ôìº¯Êı ---//
+	//--- æ„é€ å‡½æ•° ---//
 	Counter() : cnt(0) { }
 
-	//--- ÏòÉÏ¼ÆÊı ---//
+	//--- å‘ä¸Šè®¡æ•° ---//
 	void increment() {
-		if (cnt < UINT_MAX) cnt++;		// ¼ÆÊıÆ÷µÄÉÏÏŞÎªUINT_MAX
+		if (cnt < UINT_MAX) cnt++;		// è®¡æ•°å™¨çš„ä¸Šé™ä¸ºUINT_MAX
 	}
 
-	//--- ÏòÏÂ¼ÆÊı ---//
+	//--- å‘ä¸‹è®¡æ•° ---//
 	void decrement() {
-		if (cnt > 0) cnt--;				// ¼ÆÊıÆ÷µÄÏÂÏŞÎª0
+		if (cnt > 0) cnt--;				// è®¡æ•°å™¨çš„ä¸‹é™ä¸º0
 	}
 
-	//--- ·µ»Ø¼ÆÊıÆ÷ ---//
-	unsigned value() {					// cntµÄ»ñÈ¡Æ÷
+	//--- è¿”å›è®¡æ•°å™¨ ---//
+	unsigned value() {					// cntçš„è·å–å™¨
 		return cnt;
 	}
 };
