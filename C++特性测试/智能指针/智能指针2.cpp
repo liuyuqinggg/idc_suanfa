@@ -15,7 +15,7 @@ int main()
 {
 	SmartPtr<int> ptr(new int());
 	*ptr = 20;
-	cout << *ptr;
+	cout << *ptr << endl;
 	return 0;
 }
 
