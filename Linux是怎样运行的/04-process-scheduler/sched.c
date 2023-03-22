@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         }
         int nrecord = total / resol;
 
-        struct timespec *logbuf = malloc(nrecord * sizeof(struct timespec));
+        struct timespec *logbuf = (struct timespec *)malloc(nrecord * sizeof(struct timespec));
 	if (!logbuf)
 		err(EXIT_FAILURE, "failed to allocate log buffer");
 
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 	puts("end estimation");
 	fflush(stdout);
 
-        pids = malloc(nproc * sizeof(pid_t));
+        pids = (pid_t *)malloc(nproc * sizeof(pid_t));
         if (pids == NULL)
                 err(EXIT_FAILURE, "failed to allocate pid table");
 

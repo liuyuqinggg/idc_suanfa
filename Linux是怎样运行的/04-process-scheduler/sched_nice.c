@@ -94,13 +94,13 @@ int main(int argc, char *argv[])
         }
         int nrecord = total / resol;
 
-        struct timespec *logbuf = malloc(nrecord * sizeof(struct timespec));
+        struct timespec *logbuf = (struct timespec *)malloc(nrecord * sizeof(struct timespec));
 	if (!logbuf)
 		err(EXIT_FAILURE, "malloc(logbuf) failed");
 
         unsigned long nloop_per_resol = loops_per_msec() * resol;
 
-        pids = malloc(nproc * sizeof(pid_t));
+        pids = (pid_t *)malloc(nproc * sizeof(pid_t));
         if (pids == NULL) {
                 warn("malloc(pids) failed");
                 goto free_logbuf;
