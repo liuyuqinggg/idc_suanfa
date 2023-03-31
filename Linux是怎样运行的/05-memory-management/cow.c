@@ -7,7 +7,7 @@
 #include <string.h>
 #include <err.h>
 
-#define BUFFER_SIZE	(100 * 1024 * 1024)
+#define BUFFER_SIZE	(1000 * 1024 * 1024)
 #define PAGE_SIZE	4096
 #define COMMAND_SIZE	4096
 
