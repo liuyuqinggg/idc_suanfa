@@ -10,6 +10,11 @@ struct st_pinfo{
     time_t atime;  // last heartbeat time  ,  if (current time - atime ) > timeout,that means the process has problems
 };
 
+void EXIT(int sig){
+    printf("sig=%d\n",sig);
+    if(sig == 2) exit(0); // program quit by the exit() will not call the destruction of the local variable
+}
+
 
 class CActive{
     public:
@@ -101,15 +106,20 @@ CActive::~CActive(){
     shmdt(m_shm);
 }
 
+CActive cactive;
+
 int main(int argc, char const *argv[])
 {
-    if(argc < 2) { printf(("Using: ./book procname\n")); return 0;}
+    if(argc < 3) { printf(("Using: ./book procname timeout\n")); return 0;}
+
+    signal(2,EXIT);
+    signal(15,EXIT);
     
-    CActive cactive;
-    cactive.AddPInfo(30,argv[1]);
+    
+    cactive.AddPInfo(atoi(argv[2]),argv[1]);
     while (true)
     {
-        cactive.UptATime();
+        // cactive.UptATime();
         sleep(10);
     }
     
