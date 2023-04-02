@@ -96,7 +96,7 @@ int main(int argc, char const *argv[])
     logfile.Write("crtsurfdata 开始运行。\n");
 
     Pactive.AddPInfo(20,"crtsurfdata");
-    sleep(60);
+    // sleep(60);
     
 
     if(!LoadSTCode(argv[1])){

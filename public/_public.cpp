@@ -1674,11 +1674,18 @@ CDir::~CDir()
 bool REMOVE(const char *filename,const int times)
 {
   // 如果文件不存在，直接返回失败
-  if (access(filename,R_OK) != 0) return false;
+  if (access(filename,R_OK) != 0){
+    // printf("文件%s不存在\n",filename);
+    return false;
+  } 
 
   for (int ii=0;ii<times;ii++)
   {
-    if (remove(filename) == 0) return true;
+    if (remove(filename) == 0){
+        // printf("删除成功\n");
+        return true;
+    }
+     
 
     usleep(100000);
   }
