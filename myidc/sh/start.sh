@@ -4,7 +4,7 @@
 #/home/lyq/project/mytools/bin/procctl 10 /home/lyq/project/mytools/bin/checkproc  /home/lyq/project/tem/log/checkproc.log
 
 #压缩数据中心后台服务程序的日志
-/home/lyq/project/mytools/bin/procctl 300 /home/lyq/project/mytools/bin/gzipfiles /home/lyq/project/myidc/log "*.log" 0.05
+/home/lyq/project/mytools/bin/procctl 300 /home/lyq/project/mytools/bin/gzipfiles /home/lyq/project/myidc/log "*.log" 0.1
 
 #生成观测数据
 /home/lyq/project/mytools/bin/procctl 60 /home/lyq/project/myidc/bin/crtsurfdata /home/lyq/project/myidc/ini/stcode.ini /home/lyq/project/tem/surfdata\
