@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#检查服务是否超时
-/home/lyq/project/mytools/bin/procctl 10 /home/lyq/project/mytools/bin/checkproc  /home/lyq/project/tem/log/checkproc.log
-#启动数据中心后台服务程序
-su - lyq -c "/bin/sh /home/lyq/project/myidc/sh/start.sh"
-
