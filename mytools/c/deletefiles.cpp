@@ -29,7 +29,8 @@ int main(int argc, char const *argv[])
 
     //get timeout
     char strTimeOut[21];
-    LocalTime(strTimeOut,"yyyy-mm-dd hh24:mi:ss",0 - (int)stof(argv[3])*24*60*60); //研究一下LocalTime
+    int offset  = (int)(stof(argv[3])*24*60*60);
+    LocalTime(strTimeOut,"yyyy-mm-dd hh24:mi:ss",0 - offset); //研究一下LocalTime
 
     //open directory
     CDir Dir;
@@ -43,6 +44,7 @@ int main(int argc, char const *argv[])
         // printf("FullFileName=%s\n",Dir.m_FullFileName);
 
         //check file whether if timeout
+        printf("%s,%s\n\n",Dir.m_ModifyTime,strTimeOut);
         if(strcmp(Dir.m_ModifyTime,strTimeOut) < 0){
           
             if(REMOVE(Dir.m_FullFileName) == true){

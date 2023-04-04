@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
 
     //get timeout
     char strTimeOut[21];
-    LocalTime(strTimeOut,"yyyy-mm-dd hh24:mi:ss",0 - (int)stof(argv[3])*24*60*60); //研究一下LocalTime
+    LocalTime(strTimeOut,"yyyy-mm-dd hh24:mi:ss",0 - (int)(stof(argv[3])*24*60*60)); //研究一下LocalTime
 
     //open directory
     CDir Dir;
