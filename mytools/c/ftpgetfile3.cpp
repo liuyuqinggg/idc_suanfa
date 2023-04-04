@@ -15,17 +15,14 @@ struct st_arg{
     char listfilename[301];
     int ptype;
     char remotepathbak[301];
-    char okfilename[301];
 };
+
 struct st_fileinfo{
     char filename[301];
     char mtime[21];
 };
 
-vector<struct st_fileinfo> vfileinfo1; //已经下载成功文件名的容器，从okfilename中加载
-vector<struct st_fileinfo> vfileinfo2; //下载前列出服务器文件名的容器，从nlist文件中加载
-vector<struct st_fileinfo> vfileinfo3; //本次不需要下载的文件的容器
-vector<struct st_fileinfo> vfileinfo4; //本次需要下载的文件的容器
+vector<struct st_fileinfo> vfileinfo;
 
 struct st_arg starg;
 
@@ -38,13 +35,8 @@ void _help();
 bool _xml_to_arg(const char *xmlbuffer);
 bool _ftpgetfiles();
 bool _loadlistfile();
-bool LoadOKFile();
-bool CompVector();
-bool WriteToOKFile();
-bool AppendToOKFile(struct st_fileinfo *);
 
-
-// ../bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log "<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> <remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml,*.csv</matchname><listfilename>/home/lyq/project/local/list.data</listfilename><ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename>"
+// ../bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log "<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> <remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml,*.csv</matchname><listfilename>/home/lyq/project/local/list.data</listfilename><ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak>"
 int main(int argc, char const *argv[])
 {
     if(argc != 3){
@@ -85,35 +77,12 @@ int main(int argc, char const *argv[])
         logfile.Write(" _loadlistfile() failed!\n"); return -1;
    }
 
-   if(starg.ptype == 1){
-
-        //加载okfilename文件中的内容到容器vfileinfo1中。
-        if(LoadOKFile() == false){
-            return -1;
-        }
-
-        //比较vfileinfo1和vfileinfo2,得到vfileinfo3 and vfileinfo4
-        if(CompVector() == false){
-            return -1;
-        }
-
-        //用vfileinfo3内容写入okfilename
-        if(WriteToOKFile() == false){
-            return -1;
-        }
-
-        //把vfileinfo4 覆盖到 vfileinfo2，此时vfileinfo2中就是要下载的文件名集合
-        vfileinfo2.clear();
-        vfileinfo2.swap(vfileinfo4);
-
-   }
-
     //遍历容器 下载文件
     char strremotefilename[301], strlocalfilename[301];
-    for (int i = 0; i < vfileinfo2.size(); i++)
+    for (int i = 0; i < vfileinfo.size(); i++)
     {
-        SNPRINTF(strremotefilename,sizeof(strremotefilename),300,"%s%s",starg.remotepath,vfileinfo2[i].filename);
-        SNPRINTF(strlocalfilename,sizeof(strlocalfilename),300,"%s%s",starg.localpath,vfileinfo2[i].filename);
+        SNPRINTF(strremotefilename,sizeof(strremotefilename),300,"%s%s",starg.remotepath,vfileinfo[i].filename);
+        SNPRINTF(strlocalfilename,sizeof(strlocalfilename),300,"%s%s",starg.localpath,vfileinfo[i].filename);
         //ftp.get()
         logfile.Write("get %s ...\n",strremotefilename);
         if(ftp.get(strremotefilename,strlocalfilename) == false){
@@ -121,11 +90,6 @@ int main(int argc, char const *argv[])
             break;
         }
         logfile.Write("get %s ok!\n",strremotefilename);
-
-        //append the new downloaded file name to okfilename
-        if(starg.ptype == 1){ 
-            AppendToOKFile(&vfileinfo2[i]);
-        }
 
         //delete file
         if(starg.ptype == 2){
@@ -138,7 +102,7 @@ int main(int argc, char const *argv[])
         //restore file
         if(starg.ptype == 3){
             char strremotefilebakname[301];
-            SNPRINTF(strremotefilebakname,sizeof(strremotefilebakname),300,"%s/%s",starg.remotepathbak,vfileinfo2[i].filename);
+            SNPRINTF(strremotefilebakname,sizeof(strremotefilebakname),300,"%s/%s",starg.remotepathbak,vfileinfo[i].filename);
             if(ftp.ftprename(strremotefilename,strremotefilebakname) == false){
                 logfile.Write("ftp.ftprename(%s,%s) failed\n",strremotefilename,strremotefilebakname);
                 return false;
@@ -150,82 +114,14 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-bool AppendToOKFile(struct st_fileinfo *stfileinfo){
-    CFile File;
-    if(File.Open(starg.okfilename,"a") == false){
-        logfile.Write("File.Open(%s,\"w\") failed!\n",starg.okfilename);
-        return false;
-    }
-
-    File.Fprintf("%s\n",stfileinfo->filename);
-    return true;
-}
-
-bool LoadOKFile(){
-    vfileinfo1.clear();
-    CFile File;
-    //注意：如果程序第一次下载，okfilename是不存在的，并不是错误，所以返回true
-    if(File.Open(starg.okfilename,"r") == false) return true;
-    struct st_fileinfo stfileinfo;
-    while (true)
-    {
-        memset(&stfileinfo,0,sizeof(stfileinfo));
-
-        if(File.Fgets(stfileinfo.filename,300,true) == false) break;
-
-        if(MatchStr(stfileinfo.filename,starg.matchname) == false) continue;
-        vfileinfo1.push_back(stfileinfo);
-        
-    }
-    return true;
-}
-
-bool CompVector(){
-
-    vfileinfo3.clear();
-    vfileinfo4.clear();
-
-    for (int i = 0; i < vfileinfo2.size(); i++)
-    {
-        int j = 0;
-        for (; j < vfileinfo1.size(); j++)
-        {
-            if(strcmp(vfileinfo2[i].filename,vfileinfo1[j].filename) == 0){ // already download
-                vfileinfo3.push_back(vfileinfo2[i]);
-                break;
-            }
-        }
-        if(j == vfileinfo1.size()){
-            vfileinfo4.push_back(vfileinfo2[i]);
-        }
-        
-    }
-    return true;
-
-}
-bool WriteToOKFile(){
-    CFile File;
-    if(File.Open(starg.okfilename,"w") == false){
-        logfile.Write("File.Open(%s,\"w\") failed!\n",starg.okfilename);
-        return false;
-    }
-
-    for (int i = 0; i < vfileinfo3.size(); i++)
-    {
-        File.Fprintf("%s\n",vfileinfo3[i].filename);
-    }
-    return true;
-    
-}
-
 void _help(){
     printf("\n");
         printf("Using:/home/lyq/project/mytools/bin/ftpgetfiles logfilename xmlbuffer\n\n");
 
         printf("Example:/home/lyq/project/mytools/bin/procctl 30 /home/lyq/project/mytools/bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log \
-\"<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> \
+<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> \
 <remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml,*.csv</matchname><listfilename>/home/lyq/project/local/list.data</listfilename> \
-<ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename>\"\n\n\n");
+<ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak>\n\n\n");
         printf("本程序是通用的功能模块，用于把远程ftp服务器的文件下载到本地目录。\n");
         printf("logfilename是本程序的日志文件名称。\n");
         printf("xmlbuffer是文件下载的参数，如下：\n");
@@ -238,7 +134,6 @@ void _help(){
         printf("<matchname>*.xml,*.csv</matchname> 匹配规则\n");
         printf("<listfilename>/home/lyq/project/local/list.data</listfilename> 下载的服务器目录文件存在本地的文件名称\n");
         printf("<ptype>1</ptype> 文件下载成功后，远程服务器文件的处理方式:1-什么也不做； 2-删除； 3-备份，如果为3还要指定备份的目录\n");
-        printf("<okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename> 已下载成功文件名称清单，次参数只有当ptype=1时候才有效\n");
 }
 // xmlsoft.org
 bool _xml_to_arg(const char *xmlbuffer){
@@ -293,14 +188,6 @@ bool _xml_to_arg(const char *xmlbuffer){
         return false;
     }
 
-    GetXMLBuffer(xmlbuffer,"okfilename",starg.okfilename,301);
-    if(starg.ptype == 1 && (strlen(starg.okfilename) == 0)){
-        logfile.Write("okfilename is null.\n");
-        return false;
-    }
-
-
-
     return true;
 }
 
@@ -316,19 +203,15 @@ bool _ftpgetfiles(){
         logfile.Write("ftp.nlist(\".\",%s) failed!\n",starg.listfilename);
         return false;
     }
+
     logfile.Write("ftp.nlist(\".\",%s) ok!\n",starg.listfilename);
-
-    //把ftp.nlist()方法获取到的list文件加载到容器vfilelist中
-
-    //遍历容器
-
 
     return true;
 
 }
 
 bool _loadlistfile(){
-    vfileinfo2.clear();
+    vfileinfo.clear();
 
     CFile File;
     if(File.Open(starg.listfilename,"r") == false){
@@ -344,12 +227,12 @@ bool _loadlistfile(){
         if(File.Fgets(stfileinfo.filename,300,true) == false) break;
 
         if(MatchStr(stfileinfo.filename,starg.matchname) == false) continue;
-        vfileinfo2.push_back(stfileinfo);
+        vfileinfo.push_back(stfileinfo);
         
     }
-    // for (int i = 0; i < vfileinfo2.size(); i++)
+    // for (int i = 0; i < vfileinfo.size(); i++)
     // {
-    //     logfile.Write("%s \n",vfileinfo2[i].filename);
+    //     logfile.Write("%s \n",vfileinfo[i].filename);
     // }
     
 
