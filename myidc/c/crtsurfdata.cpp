@@ -45,37 +45,65 @@ bool LoadSTCode(const char *inifile);
 void CrtSurfData();
 bool CrtSurfFile(const char *outpath,const char *datafmt);
 
+void EXIT(int sig){
+    logfile.Write("程序退出，sig=%d\n\n",sig);
+    exit(0);
+}
+
+CFile File;// global variable will be called the destruction when progarm exit
+CPActive Pactive;
+
+
 
 int main(int argc, char const *argv[])
 {
     // inifile  outpath logfile
-    if(argc != 5){
-        printf("Using:./crtsurfdata1 inifile outpath logfile datafmt\n");
+    if(argc != 5  && argc != 6){
+        printf("Using:./crtsurfdata1 inifile outpath logfile datafmt [datetime]\n");
         printf("Example:/home/lyq/project/myidc/bin/crtsurfdata /home/lyq/project/myidc/ini/stcode.ini /home/lyq/project/tem/surfdata\
-                 /home/lyq/project/myidc/log/crtsurfdata.log xml,json,csv\n");
+                 /home/lyq/project/myidc/log/crtsurfdata.log xml,json,csv 20210710123000\n");
 
         printf("inifile 全国气象站点参数文件名。\n");
         printf("outpath 全国气象站点数据文件存放的目录。\n");
         printf("logfile 本程序运行的日志文件名。\n");
-        printf("datafmt 生成数据文件的格式，支持xml、json和csv三种格式，中间用逗号分隔。\n\n");
+        printf("datafmt 生成数据文件的格式，支持xml、json和csv三种格式，中间用逗号分隔。\n");
+        printf("datetime 这是一个可选参数，表示生成指定时间的数据和文件。\n\n");
 
 
         return -1;
 
     }
+
+    CloseIOAndSignal(true);
+
+    signal(SIGINT,EXIT);
+    signal(SIGTERM,EXIT);
+
+    memset(strddatetime,0,sizeof(strddatetime));
+    if(argc == 6){
+        memcpy(strddatetime,argv[5],sizeof(argv[5]));
+        STRCPY(strddatetime,sizeof strddatetime,argv[5]);
+    }else{
+        LocalTime(strddatetime,"yyyymmddhh24miss");
+    }
+    
+    
 
     if(!logfile.Open(argv[3])){
         printf("logfile.Open(%s) failed.\n",argv[3]); return -1;
     }
 
     logfile.Write("crtsurfdata 开始运行。\n");
+
+    Pactive.AddPInfo(20,"crtsurfdata");
+    // sleep(60);
     
 
     if(!LoadSTCode(argv[1])){
         return -1;
     }
 
-    CrtSurfData(); //生成数据到vector  不能写成 void CrtSurfData(); 否则不执行。
+    CrtSurfData(); //生成数据到vector  不能写成 void CrtSurfData(); 这是函数声明
 
     if(strstr(argv[4],"csv") != NULL){
         CrtSurfFile(argv[2],"csv");
@@ -96,13 +124,13 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
+
+//write the data to file from vector
 bool CrtSurfFile(const char *outpath,const char *datafmt){
     //拼接文件名
-    CFile File;
-
+    
     char strFileName[301];
-    memset(strddatetime,0,sizeof(strddatetime));
-    LocalTime(strddatetime,"yyyymmddhh24miss");
+    
     sprintf(strFileName, "%s/SURF_ZH_%s_%d.%s",outpath,strddatetime,getpid(),datafmt);
 
     //打开文件
@@ -110,6 +138,8 @@ bool CrtSurfFile(const char *outpath,const char *datafmt){
         logfile.Write("File.OpenForRename(%s) failed.\n",strFileName);
         return false;
     }
+
+    
 
     //写入第一行标题
     if(strcmp(datafmt,"csv") == 0) File.Fprintf("站点代码,数据时间,气温,气压,相对湿度,风向,风速,降雨量,能见度\n");
@@ -143,14 +173,17 @@ bool CrtSurfFile(const char *outpath,const char *datafmt){
 
     if(strcmp(datafmt,"xml") == 0) File.Fprintf("</data>\n");
     if(strcmp(datafmt,"json") == 0) File.Fprintf("]}\n");
+    // sleep(50); 测试程序异常终止
     File.CloseAndRename();
+    UTime(strFileName,strddatetime);
+    // if(UTime(strFileName,strddatetime) == false) fprintf(stderr,"UTime: %s", strerror(errno));;
     logfile.Write("生成数据文件%s成功，数据时间%s，记录数%d。\n",strFileName,strddatetime,vsurfdata.size());
     
     return true;
 }
 
 
-
+// generate fake data
 bool LoadSTCode(const char *inifile){
 
     CFile cfile;
@@ -208,10 +241,6 @@ void CrtSurfData(){
 
     //设置随机数
     srand(time(0));
-
-    char strddatetime[21];
-    memset(strddatetime,0,sizeof(strddatetime));
-    LocalTime(strddatetime,"yyyymmddhh24miss");
 
     struct st_surfdata stsurfdata;
 

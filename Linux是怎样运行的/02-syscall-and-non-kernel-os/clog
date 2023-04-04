@@ -1,0 +1,39 @@
+execve("./hello", ["./hello"], 0x7ffea0ed15e8 /* 87 vars */) = 0 <0.000410>
+brk(NULL)                               = 0x5575cf44c000 <0.000013>
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffd5433d670) = -1 EINVAL (Invalid argument) <0.000013>
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fd0d005e000 <0.000016>
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory) <0.000020>
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3 <0.000018>
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=96349, ...}, AT_EMPTY_PATH) = 0 <0.000017>
+mmap(NULL, 96349, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fd0d0046000 <0.000016>
+close(3)                                = 0 <0.000013>
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3 <0.000016>
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P\237\2\0\0\0\0\0"..., 832) = 832 <0.000015>
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784 <0.000013>
+pread64(3, "\4\0\0\0 \0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0"..., 48, 848) = 48 <0.000013>
+pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0i8\235HZ\227\223\333\350s\360\352,\223\340."..., 68, 896) = 68 <0.000013>
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=2216304, ...}, AT_EMPTY_PATH) = 0 <0.000013>
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784 <0.000012>
+mmap(NULL, 2260560, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fd0cfe00000 <0.000020>
+mmap(0x7fd0cfe28000, 1658880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x28000) = 0x7fd0cfe28000 <0.000029>
+mmap(0x7fd0cffbd000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bd000) = 0x7fd0cffbd000 <0.000020>
+mmap(0x7fd0d0015000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x214000) = 0x7fd0d0015000 <0.000020>
+mmap(0x7fd0d001b000, 52816, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fd0d001b000 <0.000018>
+close(3)                                = 0 <0.000012>
+mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fd0d0043000 <0.000015>
+arch_prctl(ARCH_SET_FS, 0x7fd0d0043740) = 0 <0.000012>
+set_tid_address(0x7fd0d0043a10)         = 443017 <0.000012>
+set_robust_list(0x7fd0d0043a20, 24)     = 0 <0.000012>
+rseq(0x7fd0d00440e0, 0x20, 0, 0x53053053) = 0 <0.000013>
+mprotect(0x7fd0d0015000, 16384, PROT_READ) = 0 <0.000019>
+mprotect(0x5575ce80f000, 4096, PROT_READ) = 0 <0.000016>
+mprotect(0x7fd0d0098000, 8192, PROT_READ) = 0 <0.000029>
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0 <0.000020>
+munmap(0x7fd0d0046000, 96349)           = 0 <0.000052>
+newfstatat(1, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0xb), ...}, AT_EMPTY_PATH) = 0 <0.000025>
+getrandom("\xb3\xb5\x01\x4a\xdd\xf6\x9f\x49", 8, GRND_NONBLOCK) = 8 <0.000021>
+brk(NULL)                               = 0x5575cf44c000 <0.000021>
+brk(0x5575cf46d000)                     = 0x5575cf46d000 <0.000023>
+write(1, "hello world\n", 12)           = 12 <0.000035>
+exit_group(0)                           = ?
++++ exited with 0 +++
