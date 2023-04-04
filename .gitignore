@@ -1,3 +1,5 @@
-surfdata/
+.gitignore
 *.log
 rc.local
+remotepathbak/
+SURF_ZH_*
