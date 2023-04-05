@@ -7,7 +7,7 @@ CFLAGS = -g
 all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles ftpgetfiles
 
 procctl:procctl.cpp 
-		g++ -o procctl procctl.cpp
+		g++ -g -o procctl procctl.cpp $(PUBINCL) $(PUBCPP)  -lm -lc
 		mv procctl ../bin/
 
 checkproc: checkproc.cpp

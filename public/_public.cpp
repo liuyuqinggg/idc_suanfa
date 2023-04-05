@@ -2265,8 +2265,15 @@ bool CPActive::AddPInfo(const int timeout,const char *pname,CLogFile *logfile)
   // 创建/获取共享内存，键值为SHMKEYP，大小为MAXNUMP个st_procinfo结构体的大小。
   if ( (m_shmid = shmget((key_t)SHMKEYP, MAXNUMP*sizeof(struct st_procinfo), 0666|IPC_CREAT)) == -1)
   { 
-    if (logfile!=0) logfile->Write("创建/获取共享内存(%x)失败。\n",SHMKEYP); 
-    else printf("创建/获取共享内存(%x)失败。\n",SHMKEYP);
+    
+    if (logfile!=0){
+       logfile->Write("创建/获取共享内存(%x)失败。\n",SHMKEYP); 
+       logfile->Write("error=%d  %s\n",errno,strerror(errno));
+    }
+    else {
+       printf("创建/获取共享内存(%x)失败。\n",SHMKEYP);
+       printf("error=%d  %s\n",errno,strerror(errno));
+    }
 
     return false; 
   }

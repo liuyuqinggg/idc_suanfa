@@ -16,6 +16,9 @@ struct st_arg{
     int ptype;
     char remotepathbak[301];
     char okfilename[301];
+    bool checktime = false;
+    int timeout;
+    char pname[51];
 };
 struct st_fileinfo{
     char filename[301];
@@ -43,8 +46,10 @@ bool CompVector();
 bool WriteToOKFile();
 bool AppendToOKFile(struct st_fileinfo *);
 
+CPActive PActive;
 
-// ../bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log "<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> <remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml,*.csv</matchname><listfilename>/home/lyq/project/local/list.data</listfilename><ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename>"
+
+// ../bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log "<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> <remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml,*.csv</matchname><listfilename>/home/lyq/project/local/list.data</listfilename><ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename><checktime>true</checktime><timeout>20</timeout><pname>ftpgetfile_</pname>"
 int main(int argc, char const *argv[])
 {
     if(argc != 3){
@@ -62,10 +67,13 @@ int main(int argc, char const *argv[])
         printf("打开日志文件失败（%s）。\n",argv[1]);
         return -1;
     }
-    printf("打开日志文件成功（%s）。\n",argv[1]);
+    logfile.Write("打开日志文件成功（%s）。\n",argv[1]);
 
     //解析XML，得到程序运行的参数
     if(_xml_to_arg(argv[2]) == false) return -1;
+
+    PActive.AddPInfo(starg.timeout,starg.pname,&logfile);
+    // sleep(60); 模拟程序超时场景。
     
 
     //登录ftp服务器
@@ -107,7 +115,7 @@ int main(int argc, char const *argv[])
         vfileinfo2.swap(vfileinfo4);
 
    }
-
+    PActive.UptATime();
     //遍历容器 下载文件
     char strremotefilename[301], strlocalfilename[301];
     for (int i = 0; i < vfileinfo2.size(); i++)
@@ -120,6 +128,7 @@ int main(int argc, char const *argv[])
             logfile.Write("get %s failed!\n",strremotefilename);
             break;
         }
+        PActive.UptATime();
         logfile.Write("get %s ok!\n",strremotefilename);
 
         //append the new downloaded file name to okfilename
@@ -157,7 +166,7 @@ bool AppendToOKFile(struct st_fileinfo *stfileinfo){
         return false;
     }
 
-    File.Fprintf("%s\n",stfileinfo->filename);
+    File.Fprintf("<filename>%s</filename><mtime>%s</mtime>\n",stfileinfo->filename,stfileinfo->mtime);
     return true;
 }
 
@@ -167,13 +176,16 @@ bool LoadOKFile(){
     //注意：如果程序第一次下载，okfilename是不存在的，并不是错误，所以返回true
     if(File.Open(starg.okfilename,"r") == false) return true;
     struct st_fileinfo stfileinfo;
+    char strbuffer[501];
+
     while (true)
     {
         memset(&stfileinfo,0,sizeof(stfileinfo));
 
-        if(File.Fgets(stfileinfo.filename,300,true) == false) break;
+        if(File.Fgets(strbuffer,300,true) == false) break;
+        GetXMLBuffer(strbuffer,"filename",stfileinfo.filename);
+        GetXMLBuffer(strbuffer,"mtime",stfileinfo.mtime);
 
-        if(MatchStr(stfileinfo.filename,starg.matchname) == false) continue;
         vfileinfo1.push_back(stfileinfo);
         
     }
@@ -190,7 +202,8 @@ bool CompVector(){
         int j = 0;
         for (; j < vfileinfo1.size(); j++)
         {
-            if(strcmp(vfileinfo2[i].filename,vfileinfo1[j].filename) == 0){ // already download
+            if(strcmp(vfileinfo2[i].filename,vfileinfo1[j].filename) == 0 &&
+                strcmp(vfileinfo2[i].mtime,vfileinfo1[j].mtime) == 0){ // 名词和时间都相等
                 vfileinfo3.push_back(vfileinfo2[i]);
                 break;
             }
@@ -212,7 +225,7 @@ bool WriteToOKFile(){
 
     for (int i = 0; i < vfileinfo3.size(); i++)
     {
-        File.Fprintf("%s\n",vfileinfo3[i].filename);
+        File.Fprintf("<filename>%s</filename><mtime>%s</mtime>\n",vfileinfo3[i].filename,vfileinfo3[i].mtime);
     }
     return true;
     
@@ -225,7 +238,8 @@ void _help(){
         printf("Example:/home/lyq/project/mytools/bin/procctl 30 /home/lyq/project/mytools/bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log \
 \"<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath> \
 <remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml,*.csv</matchname><listfilename>/home/lyq/project/local/list.data</listfilename> \
-<ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename>\"\n\n\n");
+<ptype>1</ptype><remotepathbak>/home/lyq/project/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename> \
+<checktime>true</checktime><timeout>20</timeout><pname>ftpgetfile_</pname>\"\n\n\n");
         printf("本程序是通用的功能模块，用于把远程ftp服务器的文件下载到本地目录。\n");
         printf("logfilename是本程序的日志文件名称。\n");
         printf("xmlbuffer是文件下载的参数，如下：\n");
@@ -239,6 +253,9 @@ void _help(){
         printf("<listfilename>/home/lyq/project/local/list.data</listfilename> 下载的服务器目录文件存在本地的文件名称\n");
         printf("<ptype>1</ptype> 文件下载成功后，远程服务器文件的处理方式:1-什么也不做； 2-删除； 3-备份，如果为3还要指定备份的目录\n");
         printf("<okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename> 已下载成功文件名称清单，次参数只有当ptype=1时候才有效\n");
+        printf("<checktime>true</checktime> 是否下载已更新的文件\n");
+        printf("<timeout>20</timeout> 是否下载已更新的文件\n");
+        printf("<pname>ftpgetfile_</pname> 是否下载已更新的文件\n");
 }
 // xmlsoft.org
 bool _xml_to_arg(const char *xmlbuffer){
@@ -299,6 +316,21 @@ bool _xml_to_arg(const char *xmlbuffer){
         return false;
     }
 
+    GetXMLBuffer(xmlbuffer,"timeout",&starg.timeout);
+    if(starg.timeout == 0){
+        logfile.Write("timeout is illegal.\n");
+        return false;
+    }
+
+    GetXMLBuffer(xmlbuffer,"pname",starg.pname,50);
+    if(starg.ptype == 1 && (strlen(starg.pname) == 0)){
+        logfile.Write("pname is null.\n");
+        return false;
+    }
+
+    GetXMLBuffer(xmlbuffer,"checktime",&starg.checktime);
+
+
 
 
     return true;
@@ -310,7 +342,7 @@ bool _ftpgetfiles(){
         logfile.Write("ftp.chdir(%s) failed!\n",starg.remotepath);
         return false;
     }
-
+    PActive.UptATime();
     //调用ftp.nlist()方法列出服务器目录中的文件，把结果存放到本地
     if(ftp.nlist(".",starg.listfilename) == false){
         logfile.Write("ftp.nlist(\".\",%s) failed!\n",starg.listfilename);
@@ -329,7 +361,7 @@ bool _ftpgetfiles(){
 
 bool _loadlistfile(){
     vfileinfo2.clear();
-
+    PActive.UptATime();
     CFile File;
     if(File.Open(starg.listfilename,"r") == false){
         logfile.Write("File.Open(%s,\"r\") failed! \n",starg.listfilename);
@@ -344,6 +376,16 @@ bool _loadlistfile(){
         if(File.Fgets(stfileinfo.filename,300,true) == false) break;
 
         if(MatchStr(stfileinfo.filename,starg.matchname) == false) continue;
+
+        if(starg.ptype == 1 && starg.checktime == true){
+            if(ftp.mtime(stfileinfo.filename) == false){
+                logfile.Write("ftp.mtime(%s) failed! \n",stfileinfo.filename);
+                return false;
+            }
+
+            strcpy(stfileinfo.mtime,ftp.m_mtime);
+        }
+
         vfileinfo2.push_back(stfileinfo);
         
     }

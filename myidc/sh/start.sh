@@ -13,3 +13,5 @@
 #清理观测数据历史文件
 /home/lyq/project/mytools/bin/procctl 300 /home/lyq/project/mytools/bin/deletefiles /home/lyq/project/tem/surfdata/ "*" 0.02
 
+#采集全国气象站点观测的分钟数据
+/home/lyq/project/mytools/bin/procctl 30 /home/lyq/project/mytools/bin/ftpgetfiles /home/lyq/project/log/ftpgetfile.log "<host>127.0.0.1:21</host><mode>1</mode><username>lyq</username><password>6</password><localpath>/home/lyq/project/idcdata/</localpath><remotepath>/home/lyq/project/tem/surfdata/</remotepath><matchname>*.xml</matchname><listfilename>/home/lyq/project/idcdata/list.data</listfilename><ptype>1</ptype><remotepathbak>/home/lyq/project//tem/surfdata/surfdatabak/</remotepathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surfdata.xml</okfilename><checktime>true</checktime><timeout>20</timeout><pname>ftpgetfile_</pname>"

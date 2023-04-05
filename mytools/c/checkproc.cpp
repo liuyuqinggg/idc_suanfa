@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
         printf("\n");
         printf("Usage: ./checkproc logfilename\n");
 
-        printf("Example: ~/project/mytools/bin/procctl 10 ~/project/mytools/bin/checkproc  ~/project/tem/log/checkproc.log\n\n");
+        printf("Example: /home/lyq/project/mytools/bin/procctl 10 /home/lyq/project/mytools/bin/checkproc  /home/lyq/project/tem/log/checkproc.log\n\n");
         printf("this program is used to check whether background program is timeout,if it timeout, then terminate it.");
         printf("notice:\n");
         printf("1. this program is start by procctl, the recommended period is 10 second.\n");
@@ -30,15 +30,17 @@ int main(int argc, char const *argv[])
 
     // open log
     if(logfile.Open(argv[1],"a+") == false){
-        printf("logfile.Open(%s,\"a+\")",argv[1]);
+        printf("logfile.Open(%s,\"a+\") \n",argv[1]);
     }
 
+    logfile.Write("logfile.Open(%s,\"a+\") ok!\n",argv[1]);
     // bind shared memory
     int m_shmid = 0;
-    if((m_shmid = shmget(SHMKEYP_,MAXNUMP_ * sizeof(struct st_pinfo),0640 | IPC_CREAT)) == -1){
+    if((m_shmid = shmget(SHMKEYP_,MAXNUMP_ * sizeof(struct st_pinfo),0666 | IPC_CREAT)) == -1){
         logfile.Write("shmget(%x) failed\n",SHMKEYP_);
         return false;
     }
+    logfile.Write("shmget(%x) ok!\n",SHMKEYP_);
 
     struct st_pinfo *m_shm = (struct st_pinfo *)shmat(m_shmid,0,0);
 

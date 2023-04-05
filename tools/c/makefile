@@ -1,11 +1,11 @@
 # 开发框架头文件路径。
-PUBINCL = -I/project/public
+PUBINCL = -I/home/lyq/project/public
 
 # 开发框架cpp文件名，这里直接包含进来，没有采用链接库，是为了方便调试。
-PUBCPP = /project/public/_public.cpp
+PUBCPP = /home/lyq/project/public/_public.cpp
 
 # mysql头文件存放路径
-MYSQLINCL = -I/usr/local/mysql/include  -I/project/public/db/mysql
+MYSQLINCL = -I/usr/local/mysql/include  -I/home/lyq/project/public/db/mysql
 
 # mysql库文件保存路径
 MYSQLLIB = -L/usr/local/mysql/lib
@@ -14,10 +14,10 @@ MYSQLLIB = -L/usr/local/mysql/lib
 MYSQLLIBS = -lmysqlclient
 
 # 开发框架mysql的cpp文件名，这里直接包含进来，没有采用链接库，是为了方便调试。
-MYSQLCPP = /project/public/db/mysql/_mysql.cpp
+MYSQLCPP = /home/lyq/project/public/db/mysql/_mysql.cpp
 
 # oracle头文件路径
-ORAINCL = -I$(ORACLE_HOME)/rdbms/public -I/project/public/db/oracle
+ORAINCL = -I$(ORACLE_HOME)/rdbms/public -I/home/lyq/project/public/db/oracle
 
 # oracle库文件路径
 ORALIB =  -L$(ORACLE_HOME)/lib -L.
@@ -25,7 +25,7 @@ ORALIB =  -L$(ORACLE_HOME)/lib -L.
 # oracle的oci库
 ORALIBS = -lclntsh
 # 开发框架mysql的cpp文件名，这里直接包含进来，没有采用链接库，是为了方便调试。
-ORACPP = /project/public/db/oracle/_ooci.cpp
+ORACPP = /home/lyq/project/public/db/oracle/_ooci.cpp
 
 # 编译参数。
 CFLAGS = -g
@@ -51,11 +51,11 @@ deletefiles:deletefiles.cpp
 	cp deletefiles ../bin/.
 
 ftpgetfiles:ftpgetfiles.cpp
-	g++ $(CFLAGS) -o ftpgetfiles ftpgetfiles.cpp $(PUBINCL) $(PUBCPP) /project/public/libftp.a /project/public/_ftp.cpp -lm -lc
+	g++ $(CFLAGS) -o ftpgetfiles ftpgetfiles.cpp $(PUBINCL) $(PUBCPP) /home/lyq/project/public/libftp.a /home/lyq/project/public/_ftp.cpp -lm -lc
 	cp ftpgetfiles ../bin/.
 
 ftpputfiles:ftpputfiles.cpp
-	g++ $(CFLAGS) -o ftpputfiles ftpputfiles.cpp $(PUBINCL) $(PUBCPP) /project/public/libftp.a /project/public/_ftp.cpp -lm -lc
+	g++ $(CFLAGS) -o ftpputfiles ftpputfiles.cpp $(PUBINCL) $(PUBCPP) /home/lyq/project/public/libftp.a /home/lyq/project/public/_ftp.cpp -lm -lc
 	cp ftpputfiles ../bin/.
 
 tcpputfiles:tcpputfiles.cpp
