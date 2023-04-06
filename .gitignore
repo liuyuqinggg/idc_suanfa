@@ -1,9 +1,7 @@
 #git rm -r --cached .
 *.log
 rc.local
-surfdata/*
-surfdatabak/*
-idcdata/SURF*
 !surfdata
 !surfdatabak
 !idcdata
+SURF*
