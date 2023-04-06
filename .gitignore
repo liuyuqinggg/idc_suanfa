@@ -1,3 +1,5 @@
 *.log
 rc.local
-SURF_ZH_*
+surfdata/
+surfdatabak/
+idcdata/SURF*
