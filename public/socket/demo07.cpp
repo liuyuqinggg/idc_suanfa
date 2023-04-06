@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
     printf("TcpClient.ConnectToServer(%s,%s) failed.\n",argv[1],argv[2]); return -1;
   }
 
-  char buffer[102400];
+  char buffer[102400]; // 100K
  
   // 与服务端通讯，发送一个报文后等待回复，然后再发下一个报文。
   for (int ii=0;ii<100000;ii++)

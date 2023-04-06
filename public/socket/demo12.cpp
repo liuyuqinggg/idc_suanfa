@@ -28,7 +28,7 @@ int main(int argc,char *argv[])
 {
   if (argc!=3)
   {
-    printf("Using:./demo12 port logfile\nExample:./demo12 5005 /tmp/demo12.log\n\n"); return -1;
+    printf("Using:./demo12 port logfile\nExample:./demo12 5005 /home/lyq/project/log/demo12.log\n\n"); return -1;
   }
 
   // 关闭全部的信号和输入输出。
@@ -37,6 +37,7 @@ int main(int argc,char *argv[])
   CloseIOAndSignal(); signal(SIGINT,FathEXIT); signal(SIGTERM,FathEXIT);
 
   if (logfile.Open(argv[2],"a+")==false) { printf("logfile.Open(%s) failed.\n",argv[2]); return -1; }
+  logfile.Write("logfile.Open(%s) ok.\n",argv[2]);
 
   // 服务端初始化。
   if (TcpServer.InitServer(atoi(argv[1]))==false)

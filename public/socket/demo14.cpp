@@ -31,7 +31,7 @@ int main(int argc,char *argv[])
 {
   if (argc!=4)
   {
-    printf("Using:./demo14 port logfile timeout\nExample:./demo14 5005 /tmp/demo14.log 35\n\n"); return -1;
+    printf("Using:./demo14 port logfile timeout\nExample:./demo14 5005 home/lyq/project/log/demo14.log 35\n\n"); return -1;
   }
 
   // 关闭全部的信号和输入输出。
