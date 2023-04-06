@@ -245,7 +245,7 @@ static int readline(char *buf,int max,netbuf *ctl)
     	if (ctl->cavail > 0)
     	{
 	    x = (max >= ctl->cavail) ? ctl->cavail : max-1;
-	    end = memccpy(bp,ctl->cget,'\n',x);
+	    end = (char *)memccpy(bp,ctl->cget,'\n',x);
 	    if (end != NULL)
 		x = end - bp;
 	    retval += x;
@@ -530,7 +530,7 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
 	net_close(sControl);
 	return 0;
     }
-    ctrl = calloc(1,sizeof(netbuf));
+    ctrl = (netbuf *)calloc(1,sizeof(netbuf));
     if (ctrl == NULL)
     {
 	if (ftplib_debug)
@@ -538,7 +538,7 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
 	net_close(sControl);
 	return 0;
     }
-    ctrl->buf = malloc(FTPLIB_BUFSIZ);
+    ctrl->buf = (char *)malloc(FTPLIB_BUFSIZ);
     if (ctrl->buf == NULL)
     {
 	if (ftplib_debug)
@@ -799,7 +799,7 @@ static int FtpOpenPort(netbuf *nControl, netbuf **nData, int mode, int dir)
 	    return -1;
 	}
     }
-    ctrl = calloc(1,sizeof(netbuf));
+    ctrl = (netbuf*)calloc(1,sizeof(netbuf));
     if (ctrl == NULL)
     {
 	if (ftplib_debug)
@@ -807,7 +807,7 @@ static int FtpOpenPort(netbuf *nControl, netbuf **nData, int mode, int dir)
 	net_close(sData);
 	return -1;
     }
-    if ((mode == 'A') && ((ctrl->buf = malloc(FTPLIB_BUFSIZ)) == NULL))
+    if ((mode == 'A') && ((ctrl->buf = (char *)malloc(FTPLIB_BUFSIZ)) == NULL))
     {
 	if (ftplib_debug)
 	    perror("calloc");
@@ -983,13 +983,13 @@ GLOBALDEF int FtpRead(void *buf, int max, netbuf *nData)
     if (nData->dir != FTPLIB_READ)
 	return 0;
     if (nData->buf)
-        i = readline(buf, max, nData);
+        i = readline((char *)buf, max, nData);
     else
     {
         i = socket_wait(nData);
 	if (i != 1)
 	    return 0;
-        i = net_read(nData->handle, buf, max);
+        i = net_read(nData->handle, (char *)buf, max);
     }
     if (i == -1)
 	return 0;
@@ -1016,11 +1016,11 @@ GLOBALDEF int FtpWrite(const void *buf, int len, netbuf *nData)
     if (nData->dir != FTPLIB_WRITE)
 	return 0;
     if (nData->buf)
-    	i = writeline(buf, len, nData);
+    	i = writeline((char *)buf, len, nData);
     else
     {
         socket_wait(nData);
-        i = net_write(nData->handle, buf, len);
+        i = net_write(nData->handle, (char *)buf, len);
     }
     if (i == -1)
 	return 0;
@@ -1244,7 +1244,7 @@ static int FtpXfer(const char *localfile, const char *path,
 	}
 	return 0;
     }
-    dbuf = malloc(FTPLIB_BUFSIZ);
+    dbuf = (char *)malloc(FTPLIB_BUFSIZ);
     if (typ == FTPLIB_FILE_WRITE)
     {
 	while ((l = fread(dbuf, 1, FTPLIB_BUFSIZ, local)) > 0)

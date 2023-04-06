@@ -191,7 +191,8 @@ bool Cftp::put(const char *localfilename,const char *remotefilename,const bool b
   snprintf(strremotefilenametmp,300,"%s.tmp",remotefilename);
 
   // 发送文件。
-  if (FtpPut(localfilename,strremotefilenametmp,FTPLIB_IMAGE,m_ftpconn) == false) return false;
+  if (FtpPut(localfilename,strremotefilenametmp,FTPLIB_IMAGE,m_ftpconn) == false) return false; //这里需要确认一下ftp服务器是否有开启了上传文件的权限 sudo vim /etc/vsftpd.conf  write_enable=YES
+
 
   // 重命名文件。
   if (FtpRename(strremotefilenametmp,remotefilename,m_ftpconn) == false) return false;

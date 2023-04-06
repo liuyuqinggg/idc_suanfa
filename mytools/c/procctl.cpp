@@ -6,7 +6,6 @@
 #include <sys/wait.h>
 #include "_public.h"
 
-CLogFile logfile;
 
 int main(int argc, char *argv[])
 {
@@ -24,15 +23,11 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    if(logfile.Open("/home/lyq/project/log/procctl.log","a") == false){
-        printf("logfile.Open(\"/home/lyq/project/log/procctl.log\",\"a\") failed!\n");
-        return -1;
-    }
 
     for (int i = 0; i < 64; i++)
     {
         signal(i,SIG_IGN);
-        // close(i);
+        close(i);
     }
 
 
@@ -51,14 +46,11 @@ int main(int argc, char *argv[])
     while (true)
     {
         if(fork() == 0){
-            // execl(argv[2],argv[2],argv[3],argv[4],(char*)0 );
             execv(argv[2], pargv);
-            
             exit(0);
         }else{
             int status;
             int child_pid = wait(&status);
-            logfile.Write("pid=%d --- status=%d",child_pid,status);
             sleep(atoi(argv[1]));
         }
         

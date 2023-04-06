@@ -1,7 +1,7 @@
 #关掉所有服务程序
 killall -9 procctl
-killall gzipfiles crtsurfdata deletefiles ftpgetfiles
+killall gzipfiles crtsurfdata deletefiles ftpgetfiles ftpputfiles
 
 sleep 3
 
-killall -9 gzipfiles crtsurfdata deletefiles ftpgetfiles
+killall -9 gzipfiles crtsurfdata deletefiles ftpgetfiles ftpputfiles
