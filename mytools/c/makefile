@@ -4,7 +4,7 @@ PUBCPP = /home/lyq/project/public/_public.cpp
 
 CFLAGS = -g
 
-all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles ftpgetfiles  ftpputfiles
+all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles ftpgetfiles  ftpputfiles tcpputfiles tcpserver tcpgetfiles
 
 procctl:procctl.cpp 
 		g++ -g -o procctl procctl.cpp $(PUBINCL) $(PUBCPP)  -lm -lc
@@ -30,7 +30,16 @@ ftpgetfiles: ftpgetfiles.cpp
 ftpputfiles: ftpputfiles.cpp
 		g++ $(CFLAGS) -o ftpputfiles ftpputfiles.cpp $(PUBINCL) $(PUBCPP)  /home/lyq/project/public/_ftp.cpp /home/lyq/project/public/ftplib.c -L/home/lyq/project/public  -lm -lc
 		mv ftpputfiles ../bin/
+tcpputfiles: tcpputfiles.cpp
+		g++ $(CFLAGS) -o tcpputfiles tcpputfiles.cpp $(PUBINCL) $(PUBCPP)    -lm -lc
+		mv tcpputfiles ../bin/
+tcpgetfiles: tcpgetfiles.cpp
+		g++ $(CFLAGS) -o tcpgetfiles tcpgetfiles.cpp $(PUBINCL) $(PUBCPP)    -lm -lc
+		mv tcpgetfiles ../bin/
+tcpserver: tcpserver.cpp
+		g++ $(CFLAGS) -o tcpserver tcpserver.cpp $(PUBINCL) $(PUBCPP)    -lm -lc
+		mv tcpserver ../bin/
 
 clean:
-	rm -f procctl checkproc 进程维护自己的心跳信息_封装成类 gzipfiles deletefiles ftpgetfiles ftpputfiles
+	rm -f procctl checkproc 进程维护自己的心跳信息_封装成类 gzipfiles deletefiles ftpgetfiles ftpputfiles tcpputfiles tcpserver tcpgetfiles
 

@@ -449,8 +449,10 @@ GLOBALDEF int FtpConnect(const char *host, netbuf **nControl)
     sin.sin_family = AF_INET;
     lhost = strdup(host);
     pnum = strchr(lhost,':');
-    if (pnum == NULL)
-	pnum = "ftp";
+    if (pnum == NULL){
+		// pnum = "ftp";
+		strcpy(pnum,"ftp");
+	}	
     else
 	*pnum++ = '\0';
     if (isdigit(*pnum))
