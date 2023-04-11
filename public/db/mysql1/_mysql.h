@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 
-#include <mysql.h>   // MySQL数据库接口函数的头文件
+#include <mysql/mysql.h>   // MySQL数据库接口函数的头文件
 
 // 把文件filename加载到buffer中，必须确保buffer足够大。
 // 成功返回文件的大小，文件不存在或为空返回0。
@@ -112,7 +112,7 @@ private:
   
   MYSQL_BIND params_in[MAXPARAMS];            // 输入参数。
   unsigned long params_in_length[MAXPARAMS];  // 输入参数的实际长度。
-  my_bool params_in_is_null[MAXPARAMS];       // 输入参数是否为空。
+  bool params_in_is_null[MAXPARAMS];       // 输入参数是否为空。
   unsigned maxbindin;                         // 输入参数最大的编号。
 
   MYSQL_BIND params_out[MAXPARAMS]; // 输出参数。

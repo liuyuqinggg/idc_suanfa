@@ -1,7 +1,7 @@
 #########################################
 
 # mysql头文件存放路径
-MYSQLINCL = -I/usr/local/mysql/include
+MYSQLINCL = -I/usr/include/mysql
 
 # mysql库文件保存路径
 MYSQLLIB = -L/usr/local/mysql/lib

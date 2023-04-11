@@ -11,7 +11,7 @@ int main(int argc,char *argv[])
 
   // 登录数据库，返回值：0-成功；其它是失败，存放了MySQL的错误代码。
   // 失败代码在conn.m_cda.rc中，失败描述在conn.m_cda.message中。
-  if (conn.connecttodb("127.0.0.1,root,mysqlpwd,mysql,3306","utf8")!=0)
+  if (conn.connecttodb("127.0.0.1,root,mysql,mysql,3306","utf8")!=0)
   {
     printf("connect database failed.\n%s\n",conn.m_cda.message); return -1;
   }
@@ -27,7 +27,7 @@ int main(int argc,char *argv[])
   sqlstatement stmt(&conn);  // 操作SQL语句的对象。
 
   // 准备查询表的SQL语句。
-  stmt.prepare("select id,pic from girls where id in (1,2)");
+  stmt.prepare("select id,pic from girls where id in (4,5)");
   stmt.bindout(1,&stgirls.id);
   stmt.bindoutlob(2, stgirls.pic,100000,&stgirls.picsize);
 
