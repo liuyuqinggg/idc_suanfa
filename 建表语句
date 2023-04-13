@@ -22,11 +22,6 @@ alter table T_ZHOBTCODE comment '越800条 变更次数很少 包括新增 更�
 
 -------------------------------------------------------------------------------------------------------------
 
-drop index Index_3 on T_ZHOBTMIND;
-
-drop index Index_2 on T_ZHOBTMIND;
-
-drop index Index_1 on T_ZHOBTMIND;
 
 drop table if exists T_ZHOBTMIND;
 
