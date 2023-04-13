@@ -1,0 +1,76 @@
+drop table if exists T_ZHOBTCODE;
+
+/*==============================================================*/
+/* Table: T_ZHOBTCODE                                           */
+/*==============================================================*/
+create table T_ZHOBTCODE
+(
+   obtid                varchar(10) not null,
+   cityname             varchar(30) not null,
+   provname             varchar(30) not null,
+   lat                  int not null,
+   lon                  int not null,
+   height               int,
+   upttime              timestamp not null,
+   keyid                int not null auto_increment comment '自动增长列',
+   primary key (obtid),
+   key AK_Key_2 (keyid)
+);
+
+alter table T_ZHOBTCODE comment '越800条 变更次数很少 包括新增 更新操作';
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+drop table if exists T_ZHOBTMIND;
+
+/*==============================================================*/
+/* Table: T_ZHOBTMIND                                           */
+/*==============================================================*/
+create table T_ZHOBTMIND
+(
+   obtid                varchar(10) not null,
+   ddatetime            datetime not null,
+   t                    int,
+   p                    int,
+   u                    int,
+   wd                   int,
+   wf                   int,
+   r                    int,
+   vis                  int,
+   upttime              datetime not null default CURRENT_TIMESTAMP,
+   keyid                bigint not null,
+   primary key (obtid, ddatetime),
+   key AK_Key_2 (keyid)
+);
+
+alter table T_ZHOBTMIND comment '站点数840ge  数据周期为1分钟  只有插入操作';
+
+/*==============================================================*/
+/* Index: Index_1                                               */
+/*==============================================================*/
+create unique index Index_1 on T_ZHOBTMIND
+(
+   ddatetime,
+   obtid
+);
+
+/*==============================================================*/
+/* Index: Index_2                                               */
+/*==============================================================*/
+create index Index_2 on T_ZHOBTMIND
+(
+   ddatetime
+);
+
+/*==============================================================*/
+/* Index: Index_3                                               */
+/*==============================================================*/
+create index Index_3 on T_ZHOBTMIND
+(
+   obtid
+);
+
+alter table T_ZHOBTMIND add constraint FK_Reference_1 foreign key (obtid)
+      references T_ZHOBTCODE (obtid) on delete restrict on update restrict;
