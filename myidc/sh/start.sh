@@ -1,7 +1,7 @@
 #启动数据中心后台服务程序的脚本
 
 #检查服务程序是否超时，配置在/etc/rc.local中由root用户执行
-#/home/lyq/project/mytools/bin/procctl 10 /home/lyq/project/mytools/bin/checkproc  /home/lyq/project/log/checkproc.log
+#sudo /home/lyq/project/mytools/bin/procctl 10 /home/lyq/project/mytools/bin/checkproc  /home/lyq/project/log/checkproc.log
 
 #压缩数据中心后台服务程序的日志
 /home/lyq/project/mytools/bin/procctl 300 /home/lyq/project/mytools/bin/gzipfiles /home/lyq/project/surfdata/ "*" 0.01
@@ -25,3 +25,11 @@
 #清理上传的观测数据历史文件
 /home/lyq/project/mytools/bin/procctl 300 /home/lyq/project/mytools/bin/deletefiles /home/lyq/project/surfdatabak/ "*" 0.01
 
+#将站点参数文件入库
+/home/lyq/project/tools1/bin/procctl 120 /home/lyq/project/myidc/bin/obtcodetodb /home/lyq/project/myidc/ini/stcode.ini "127.0.0.1,root,mysql,mysql,3306" utf8 /home/lyq/project/log/obtcodetodb.log
+
+#定期清理数据库历史数据
+/home/lyq/project/mytools/bin/procctl 120 /home/lyq/project/mytools/bin/execsql /home/lyq/project/myidc/sql/cleardata.sql "127.0.0.1,root,mysql,mysql,3306" utf8 /home/lyq/project/log/execsql.log
+
+#定期入库站点分钟数据
+/home/lyq/project/mytools/bin/procctl 10 /home/lyq/project/myidc/bin/obtmindtodb /home/lyq/project/surfdatabak "127.0.0.1,root,mysql,mysql,3306" utf8 /home/lyq/project/log/obtmindtodb.log

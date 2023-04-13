@@ -2,9 +2,18 @@ PUBINCL = -I/home/lyq/project/public
 
 PUBCPP = /home/lyq/project/public/_public.cpp
 
+#需要链接的mysql库
+MYSQLLIBS = -lmysqlclient
+
+# 开发框架mysql的cpp文件名，这里直接包含进来，没有采用链接库，是为了方便调试。
+MYSQLCPP = /home/lyq/project/public/db/mysql/_mysql.cpp
+
+# mysql头文件存放路径
+MYSQLINCL = -I/home/lyq/project/public/db/mysql
+
 CFLAGS = -g
 
-all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles ftpgetfiles  ftpputfiles tcpputfiles tcpserver tcpgetfiles
+all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles ftpgetfiles  ftpputfiles tcpputfiles tcpserver tcpgetfiles execsql
 
 procctl:procctl.cpp 
 		g++ -g -o procctl procctl.cpp $(PUBINCL) $(PUBCPP)  -lm -lc
@@ -40,6 +49,11 @@ tcpserver: tcpserver.cpp
 		g++ $(CFLAGS) -o tcpserver tcpserver.cpp $(PUBINCL) $(PUBCPP)    -lm -lc
 		mv tcpserver ../bin/
 
+execsql:execsql.cpp 
+	g++ $(CFLAGS) -o execsql execsql.cpp $(PUBINCL) $(PUBCPP) $(MYSQLINCL) $(MYSQLCPP)  $(MYSQLLIBS) -lm -lc
+	cp execsql ../bin/
+
 clean:
-	rm -f procctl checkproc 进程维护自己的心跳信息_封装成类 gzipfiles deletefiles ftpgetfiles ftpputfiles tcpputfiles tcpserver tcpgetfiles
+	rm -f procctl checkproc 进程维护自己的心跳信息_封装成类 gzipfiles deletefiles ftpgetfiles ftpputfiles tcpputfiles tcpserver tcpgetfiles 
+	rm execsql
 

@@ -254,8 +254,8 @@ void _help(){
         printf("<ptype>1</ptype> 文件下载成功后，远程服务器文件的处理方式:1-什么也不做； 2-删除； 3-备份，如果为3还要指定备份的目录\n");
         printf("<okfilename>/home/lyq/project/idcdata/ftplist/ftpgetfiles_surdata.xml</okfilename> 已下载成功文件名称清单，次参数只有当ptype=1时候才有效\n");
         printf("<checktime>true</checktime> 是否下载已更新的文件\n");
-        printf("<timeout>20</timeout> 是否下载已更新的文件\n");
-        printf("<pname>ftpgetfile_</pname> 是否下载已更新的文件\n");
+        printf("<timeout>20</timeout> 超时时间\n");
+        printf("<pname>ftpgetfile_</pname> 进程名称\n");
 }
 // xmlsoft.org
 bool _xml_to_arg(const char *xmlbuffer){

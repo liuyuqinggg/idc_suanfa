@@ -235,7 +235,7 @@ void _help(){
 <remotepath>/home/lyq/project/ftptest/server/</remotepath><matchname>*.txt</matchname> \
 <ptype>1</ptype><localpathbak>/home/lyq/project/surfdatabak/</localpathbak><okfilename>/home/lyq/project/idcdata/ftplist/ftpputfiles_surdata.xml</okfilename> \
 <checktime>true</checktime><timeout>20</timeout><pname>ftpputfile_</pname>\"\n\n\n");
-        printf("本程序是通用的功能模块，用于把远程ftp服务器的文件上传到本地目录。\n");
+        printf("本程序是通用的功能模块，用于把本地目录的文件上传到远程ftp服务器。\n");
         printf("logfilename是本程序的日志文件名称。\n");
         printf("xmlbuffer是文件上传的参数，如下：\n");
         printf("<host>127.0.0.1:21</host> 远程服务器的IP和端口\n");

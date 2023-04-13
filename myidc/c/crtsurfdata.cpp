@@ -37,6 +37,7 @@ struct st_surfdata{
 
 vector<struct st_surfdata>  vsurfdata;
 
+//存放当前时间，或者指定的时间
 char strddatetime[21];
 
 vector<st_stcode> vstcode;
@@ -79,14 +80,12 @@ int main(int argc, char const *argv[])
     signal(SIGINT,EXIT);
     signal(SIGTERM,EXIT);
 
+    // 获取当前时间，当作观测时间。
     memset(strddatetime,0,sizeof(strddatetime));
-    if(argc == 6){
-        memcpy(strddatetime,argv[5],sizeof(argv[5]));
-        STRCPY(strddatetime,sizeof strddatetime,argv[5]);
-    }else{
+    if (argc==5)
         LocalTime(strddatetime,"yyyymmddhh24miss");
-    }
-    
+    else
+        STRCPY(strddatetime,sizeof(strddatetime),argv[5]);
     
 
     if(!logfile.Open(argv[3])){
@@ -98,13 +97,15 @@ int main(int argc, char const *argv[])
     Pactive.AddPInfo(20,"crtsurfdata");
     // sleep(60);
     
-
+    //加载站点文件信息到vstcode
     if(!LoadSTCode(argv[1])){
         return -1;
     }
 
+    //生成随机数据到stsurfdata
     CrtSurfData(); //生成数据到vector  不能写成 void CrtSurfData(); 这是函数声明
 
+    //将stsurfdata数据写入到文件
     if(strstr(argv[4],"csv") != NULL){
         CrtSurfFile(argv[2],"csv");
     }
@@ -138,8 +139,6 @@ bool CrtSurfFile(const char *outpath,const char *datafmt){
         logfile.Write("File.OpenForRename(%s) failed.\n",strFileName);
         return false;
     }
-
-    
 
     //写入第一行标题
     if(strcmp(datafmt,"csv") == 0) File.Fprintf("站点代码,数据时间,气温,气压,相对湿度,风向,风速,降雨量,能见度\n");
@@ -196,8 +195,6 @@ bool LoadSTCode(const char *inifile){
     struct st_stcode stcode;
 
     CCmdStr cmdStr;
-
-   
 
     while (true)
     {
