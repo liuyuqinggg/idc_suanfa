@@ -39,7 +39,7 @@ create table T_ZHOBTMIND
    wf                   int,
    r                    int,
    vis                  int,
-   upttime              datetime not null default CURRENT_TIMESTAMP
+   upttime              datetime not null default CURRENT_TIMESTAMP,
    keyid                bigint not null,
    primary key (obtid, ddatetime),
    key AK_Key_2 (keyid)
