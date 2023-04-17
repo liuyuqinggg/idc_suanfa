@@ -41,18 +41,18 @@ void *thmain1(void *arg)    // 线程1的主函数。
 
 void *thmain2(void *arg)    // 线程2的主函数。
 {
-  printf("线程二申请互斥锁...\n");
-  pthread_mutex_lock(&mutex);
-  printf("线程二申请互斥锁成功。\n");
+  // printf("线程二申请互斥锁...\n");
+  // pthread_mutex_lock(&mutex);
+  // printf("线程二申请互斥锁成功。\n");
 
-  pthread_cond_signal(&cond); 
+  // pthread_cond_signal(&cond); 
 
-  sleep(5);
+  // sleep(5);
 
-  printf("线程二解锁。\n");
-  pthread_mutex_unlock(&mutex);
+  // printf("线程二解锁。\n");
+  // pthread_mutex_unlock(&mutex);
 
-  return 0;
+  // return 0;
 
   printf("线程二申请互斥锁...\n");
   pthread_mutex_lock(&mutex);

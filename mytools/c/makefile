@@ -13,7 +13,9 @@ MYSQLINCL = -I/home/lyq/project/public/db/mysql
 
 CFLAGS = -g
 
-all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles ftpgetfiles  ftpputfiles tcpputfiles tcpserver tcpgetfiles execsql
+all:procctl checkproc 进程维护自己的心跳信息_封装成类  gzipfiles deletefiles \
+ ftpgetfiles  ftpputfiles tcpputfiles tcpserver tcpgetfiles execsql dminingmysql \
+ xmltodb
 
 procctl:procctl.cpp 
 		g++ -g -o procctl procctl.cpp $(PUBINCL) $(PUBCPP)  -lm -lc
@@ -51,9 +53,17 @@ tcpserver: tcpserver.cpp
 
 execsql:execsql.cpp 
 	g++ $(CFLAGS) -o execsql execsql.cpp $(PUBINCL) $(PUBCPP) $(MYSQLINCL) $(MYSQLCPP)  $(MYSQLLIBS) -lm -lc
-	cp execsql ../bin/
+	mv execsql ../bin/
+
+dminingmysql:dminingmysql.cpp 
+	g++ $(CFLAGS) -o dminingmysql dminingmysql.cpp $(PUBINCL) $(PUBCPP) $(MYSQLINCL) $(MYSQLCPP)  $(MYSQLLIBS) -lm -lc
+	mv dminingmysql ../bin/
+
+xmltodb:xmltodb.cpp 
+	g++ $(CFLAGS) -o xmltodb xmltodb.cpp $(PUBINCL) $(PUBCPP) $(MYSQLINCL) $(MYSQLCPP)  $(MYSQLLIBS) -lm -lc
+	mv xmltodb ../bin/
 
 clean:
 	rm -f procctl checkproc 进程维护自己的心跳信息_封装成类 gzipfiles deletefiles ftpgetfiles ftpputfiles tcpputfiles tcpserver tcpgetfiles 
-	rm execsql
+	rm execsql dminingmysql xmltodb
 

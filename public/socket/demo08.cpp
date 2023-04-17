@@ -33,11 +33,12 @@ int main(int argc,char *argv[])
   while (1)
   {
     memset(buffer,0,sizeof(buffer));
-    if (TcpServer.Read(buffer)==false) break; // 接收客户端的请求报文。
+    recv(TcpServer.m_connfd,buffer,102400,0);
+    // if (TcpServer.Read(buffer)==false) break; // 接收客户端的请求报文。
     printf("接收：%s\n",buffer);
 
-    strcpy(buffer,"ok");
-    if (TcpServer.Write(buffer)==false) break; // 向客户端发送响应结果。
-    printf("发送：%s\n",buffer);
+    // strcpy(buffer,"ok");
+    // if (TcpServer.Write(buffer)==false) break; // 向客户端发送响应结果。
+    // printf("发送：%s\n",buffer);
   }
 }
