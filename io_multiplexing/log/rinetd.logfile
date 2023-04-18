@@ -1,0 +1,5 @@
+2023-04-18 13:26:42 加载路由代理参数/home/lyq/project/io_multiplexing/inetd.cnf成功
+2023-04-18 13:26:58 1681795618  内网代理连接成功(socket=5).
+2023-04-18 15:04:04 1681801444  accept client(socket=9) ok.
+2023-04-18 15:04:04 1681801444  client(7,0) disconnected
+2023-04-18 18:59:18 进程退出， sig=2

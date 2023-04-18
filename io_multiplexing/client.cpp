@@ -37,24 +37,24 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < 10000000; i++)
     {
         memset(buffer,0,sizeof(buffer));
-        // printf("please input:");
-        // scanf("%s",buffer);
-        strcpy(buffer,"aaaaaaaaaaaaaaa");
+        printf("please input:");
+        scanf("%s",buffer);
+        // strcpy(buffer,"aaaaaaaaaaaaaaa");
 
         if(send(sock,buffer,sizeof(buffer),0) <= 0){
             printf("send() failed\n");
             close(sock);
             return -1;
         }
-        // memset(buffer,0,sizeof(buffer));
+        memset(buffer,0,sizeof(buffer));
 
-        // if(recv(sock,buffer,sizeof(buffer),0) <=0){
-        //     printf("read failed\n");
-        //     close(sock);
-        //     return -1;
-        // }
+        if(recv(sock,buffer,sizeof(buffer),0) <=0){
+            printf("read failed\n");
+            close(sock);
+            return -1;
+        }
 
-        // printf("recv:%s\n",buffer);
+        printf("recv:%s\n",buffer);
     }
     
 
